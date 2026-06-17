@@ -1,17 +1,16 @@
 name: YAFC Club TV Automation
 
 on:
+  schedule:
+    - cron: '*/15 * * * *'
   workflow_dispatch:
 
 jobs:
-  test:
+  heartbeat:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Test Action
+      - name: Club TV Heartbeat
         run: |
-          echo "YAFC Club TV automation is working!"
+          echo "YAFC Club TV is alive"
           date
