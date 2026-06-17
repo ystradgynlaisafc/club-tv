@@ -126,22 +126,25 @@ body{
     <div class="card">
         <h2>📊 Live Scores</h2>
         <ul>
-            <li>Loading scores...</li>
-        </ul>
+            <div id="scores-list">
+    Loading scores...
+</div>
     </div>
 
     <div class="card">
         <h2>📅 Upcoming Events</h2>
         <ul>
-            <li>Loading events...</li>
-        </ul>
+           <div id="events-list">
+    Loading events...
+</div>
     </div>
 
     <div class="card">
         <h2>🙋 Volunteers Needed</h2>
         <ul>
-            <li>Loading volunteer roles...</li>
-        </ul>
+            <div id="volunteers-list">
+    Loading volunteer roles...
+</div>
     </div>
 
 </div>
@@ -222,6 +225,119 @@ async function loadFixtures() {
 }
 
 loadFixtures();
+    async function loadScores() {
+
+```
+const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTH31XSFheY-3zxOZml1eP51kEdAXGiQMeGinvzyTThamIwjDBkyyuHleSVIrbyFQSNdUGgCC3dpixM/pub?gid=134670430&single=true&output=csv';
+
+try {
+
+    const response = await fetch(url);
+    const csv = await response.text();
+
+    const rows = csv.trim().split('\n').slice(1);
+
+    let html = '';
+
+    rows.forEach(row => {
+
+        const cols = row.split(',');
+
+        html += `
+        <div class="data-card">
+            <strong>${cols[0]}</strong><br>
+            vs ${cols[1]}<br>
+            ${cols[2]}
+        </div>`;
+    });
+
+    document.getElementById('scores-list').innerHTML = html;
+
+} catch(error) {
+
+    document.getElementById('scores-list').innerHTML =
+        'Unable to load scores';
+
+}
+```
+
+}
+
+async function loadEvents() {
+
+```
+const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTH31XSFheY-3zxOZml1eP51kEdAXGiQMeGinvzyTThamIwjDBkyyuHleSVIrbyFQSNdUGgCC3dpixM/pub?gid=772596660&single=true&output=csv';
+
+try {
+
+    const response = await fetch(url);
+    const csv = await response.text();
+
+    const rows = csv.trim().split('\n').slice(1);
+
+    let html = '';
+
+    rows.forEach(row => {
+
+        const cols = row.split(',');
+
+        html += `
+        <div class="data-card">
+            <strong>${cols[0]}</strong><br>
+            ${cols[1]}
+        </div>`;
+    });
+
+    document.getElementById('events-list').innerHTML = html;
+
+} catch(error) {
+
+    document.getElementById('events-list').innerHTML =
+        'Unable to load events';
+
+}
+```
+
+}
+
+async function loadVolunteers() {
+
+```
+const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTH31XSFheY-3zxOZml1eP51kEdAXGiQMeGinvzyTThamIwjDBkyyuHleSVIrbyFQSNdUGgCC3dpixM/pub?gid=680568062&single=true&output=csv';
+
+try {
+
+    const response = await fetch(url);
+    const csv = await response.text();
+
+    const rows = csv.trim().split('\n').slice(1);
+
+    let html = '';
+
+    rows.forEach(row => {
+
+        html += `
+        <div class="data-card">
+            ${row}
+        </div>`;
+    });
+
+    document.getElementById('volunteers-list').innerHTML = html;
+
+} catch(error) {
+
+    document.getElementById('volunteers-list').innerHTML =
+        'Unable to load volunteer roles';
+
+}
+```
+
+}
+
+loadScores();
+loadEvents();
+loadVolunteers();
+
 </script>
 
 </body>
