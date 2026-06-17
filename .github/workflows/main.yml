@@ -1,0 +1,17 @@
+name: YAFC Club TV Automation
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Test Action
+        run: |
+          echo "YAFC Club TV automation is working!"
+          date
