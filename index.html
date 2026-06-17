@@ -117,7 +117,9 @@ body{
     <div class="card">
         <h2>⚽ Today's Fixtures</h2>
         <ul>
-            <li>Loading fixtures...</li>
+            <div id="fixtures-list">
+    Loading fixtures...
+</div>
         </ul>
     </div>
 
@@ -174,6 +176,52 @@ function updateClock(){
 
 updateClock();
 setInterval(updateClock,1000);
+async function loadFixtures() {
+
+    const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTH31XSFheY-3zxOZml1eP51kEdAXGiQMeGinvzyTThamIwjDBkyyuHleSVIrbyFQSNdUGgCC3dpixM/pub?gid=0&single=true&output=csv';
+
+    try {
+
+        const response = await fetch(url);
+        const csv = await response.text();
+
+        const rows = csv.trim().split('\n').slice(1);
+
+        let html = '';
+
+        rows.forEach(row => {
+
+            const cols = row.split(',');
+
+            if(cols.length >= 4){
+
+                html += `
+                <div style="
+                    background:#004a99;
+                    margin:10px 0;
+                    padding:12px;
+                    border-radius:8px;
+                ">
+                    <strong>${cols[0]}</strong><br>
+                    ${cols[1]} vs ${cols[2]}<br>
+                    ${cols[3]}
+                </div>
+                `;
+            }
+
+        });
+
+        document.getElementById('fixtures-list').innerHTML = html;
+
+    } catch(error){
+
+        document.getElementById('fixtures-list').innerHTML =
+            'Unable to load fixtures';
+
+    }
+}
+
+loadFixtures();
 </script>
 
 </body>
