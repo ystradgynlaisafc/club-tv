@@ -1,2 +1,182 @@
-<h1>Ystradgynlais AFC Matchday Hub</h1>
-<p>If you can see this, GitHub Pages is working.</p>
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ystradgynlais AFC Matchday Hub</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#003b7a;
+    color:white;
+}
+
+.header{
+    background:#002a57;
+    padding:20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:4px solid #d4af37;
+}
+
+.header h1{
+    margin:0;
+    font-size:42px;
+}
+
+.header p{
+    margin:5px 0 0;
+    color:#d4af37;
+}
+
+#clock{
+    font-size:36px;
+    font-weight:bold;
+}
+
+.container{
+    padding:20px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+.card{
+    background:#002a57;
+    border:2px solid #d4af37;
+    border-radius:12px;
+    padding:20px;
+}
+
+.card h2{
+    margin-top:0;
+    color:#d4af37;
+}
+
+.card ul{
+    list-style:none;
+    padding:0;
+    margin:0;
+}
+
+.card li{
+    padding:8px 0;
+    border-bottom:1px solid rgba(255,255,255,0.15);
+}
+
+.full-width{
+    margin-top:20px;
+}
+
+.sponsors{
+    text-align:center;
+    min-height:120px;
+}
+
+.photos{
+    text-align:center;
+    min-height:250px;
+}
+
+.footer{
+    margin-top:20px;
+    background:#d4af37;
+    color:black;
+    text-align:center;
+    padding:12px;
+    font-weight:bold;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+    <div>
+        <h1>YSTRADGYNLAIS AFC</h1>
+        <p>Clwb i Bawb – A Club for Everyone</p>
+    </div>
+
+```
+<div id="clock"></div>
+```
+
+</div>
+
+<div class="container">
+
+```
+<div class="grid">
+
+    <div class="card">
+        <h2>⚽ Today's Fixtures</h2>
+        <ul>
+            <li>Loading fixtures...</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>📊 Live Scores</h2>
+        <ul>
+            <li>Loading scores...</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>📅 Upcoming Events</h2>
+        <ul>
+            <li>Loading events...</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>🙋 Volunteers Needed</h2>
+        <ul>
+            <li>Loading volunteer roles...</li>
+        </ul>
+    </div>
+
+</div>
+
+<div class="card full-width sponsors">
+    <h2>🏢 Sponsors</h2>
+    <p>Sponsor logos coming soon.</p>
+</div>
+
+<div class="card full-width photos">
+    <h2>📸 Around The Club</h2>
+    <p>Photo gallery coming soon.</p>
+</div>
+```
+
+</div>
+
+<div class="footer">
+    YSTRADGYNLAIS AFC • MATCHDAY HUB • EST. 1911
+</div>
+
+<script>
+function updateClock(){
+    const now = new Date();
+
+    document.getElementById("clock").innerHTML =
+    now.toLocaleTimeString('en-GB',{
+        hour:'2-digit',
+        minute:'2-digit'
+    });
+}
+
+updateClock();
+setInterval(updateClock,1000);
+</script>
+
+</body>
+</html>
