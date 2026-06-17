@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -19,6 +21,16 @@ body{
     justify-content:space-between;
     align-items:center;
     border-bottom:4px solid #d4af37;
+}
+
+.header-left{
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+.header-left img{
+    height:80px;
 }
 
 .header h1{
@@ -58,29 +70,15 @@ body{
     color:#d4af37;
 }
 
-.card ul{
-    list-style:none;
-    padding:0;
-    margin:0;
-}
-
-.card li{
-    padding:8px 0;
-    border-bottom:1px solid rgba(255,255,255,0.15);
+.data-card{
+    background:#004a99;
+    margin:10px 0;
+    padding:12px;
+    border-radius:8px;
 }
 
 .full-width{
     margin-top:20px;
-}
-
-.sponsors{
-    text-align:center;
-    min-height:120px;
-}
-
-.photos{
-    text-align:center;
-    min-height:250px;
 }
 
 .footer{
@@ -98,9 +96,12 @@ body{
 <body>
 
 <div class="header">
-    <div>
-        <h1>YSTRADGYNLAIS AFC</h1>
-        <p>Clwb i Bawb – A Club for Everyone</p>
+    <div class="header-left">
+        <img src="badge.png" alt="Ystradgynlais AFC Badge">
+        <div>
+            <h1>YSTRADGYNLAIS AFC</h1>
+            <p>Clwb i Bawb – A Club for Everyone</p>
+        </div>
     </div>
 
 ```
@@ -116,45 +117,32 @@ body{
 
     <div class="card">
         <h2>⚽ Today's Fixtures</h2>
-        <ul>
-            <div id="fixtures-list">
-    Loading fixtures...
-</div>
-        </ul>
+        <div id="fixtures-list">Loading fixtures...</div>
     </div>
 
     <div class="card">
         <h2>📊 Live Scores</h2>
-        <ul>
-            <div id="scores-list">
-    Loading scores...
-</div>
+        <div id="scores-list">Loading scores...</div>
     </div>
 
     <div class="card">
         <h2>📅 Upcoming Events</h2>
-        <ul>
-           <div id="events-list">
-    Loading events...
-</div>
+        <div id="events-list">Loading events...</div>
     </div>
 
     <div class="card">
         <h2>🙋 Volunteers Needed</h2>
-        <ul>
-            <div id="volunteers-list">
-    Loading volunteer roles...
-</div>
+        <div id="volunteers-list">Loading volunteer roles...</div>
     </div>
 
 </div>
 
-<div class="card full-width sponsors">
+<div class="card full-width">
     <h2>🏢 Sponsors</h2>
     <p>Sponsor logos coming soon.</p>
 </div>
 
-<div class="card full-width photos">
+<div class="card full-width">
     <h2>📸 Around The Club</h2>
     <p>Photo gallery coming soon.</p>
 </div>
@@ -167,155 +155,91 @@ body{
 </div>
 
 <script>
+
 function updateClock(){
     const now = new Date();
-
     document.getElementById("clock").innerHTML =
-    now.toLocaleTimeString('en-GB',{
-        hour:'2-digit',
-        minute:'2-digit'
-    });
+        now.toLocaleTimeString('en-GB',{
+            hour:'2-digit',
+            minute:'2-digit'
+        });
 }
 
 updateClock();
 setInterval(updateClock,1000);
-async function loadFixtures() {
 
-    const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTH31XSFheY-3zxOZml1eP51kEdAXGiQMeGinvzyTThamIwjDBkyyuHleSVIrbyFQSNdUGgCC3dpixM/pub?gid=0&single=true&output=csv';
+const BASE = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTH31XSFheY-3zxOZml1eP51kEdAXGiQMeGinvzyTThamIwjDBkyyuHleSVIrbyFQSNdUGgCC3dpixM/pub';
 
-    try {
-
-        const response = await fetch(url);
-        const csv = await response.text();
-
-        const rows = csv.trim().split('\n').slice(1);
-
-        let html = '';
-
-        rows.forEach(row => {
-
-            const cols = row.split(',');
-
-            if(cols.length >= 4){
-
-                html += `
-                <div style="
-                    background:#004a99;
-                    margin:10px 0;
-                    padding:12px;
-                    border-radius:8px;
-                ">
-                    <strong>${cols[0]}</strong><br>
-                    ${cols[1]} vs ${cols[2]}<br>
-                    ${cols[3]}
-                </div>
-                `;
-            }
-
-        });
-
-        document.getElementById('fixtures-list').innerHTML = html;
-
-    } catch(error){
-
-        document.getElementById('fixtures-list').innerHTML =
-            'Unable to load fixtures';
-
-    }
-}
-
-loadFixtures();
-    async function loadScores() {
-
-```
-const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTH31XSFheY-3zxOZml1eP51kEdAXGiQMeGinvzyTThamIwjDBkyyuHleSVIrbyFQSNdUGgCC3dpixM/pub?gid=134670430&single=true&output=csv';
-
-try {
-
-    const response = await fetch(url);
+async function loadFixtures(){
+    const response = await fetch(BASE + '?gid=0&single=true&output=csv');
     const csv = await response.text();
-
     const rows = csv.trim().split('\n').slice(1);
 
     let html = '';
 
     rows.forEach(row => {
-
-        const cols = row.split(',');
+        const c = row.split(',');
 
         html += `
         <div class="data-card">
-            <strong>${cols[0]}</strong><br>
-            vs ${cols[1]}<br>
-            ${cols[2]}
+            <strong>${c[0]}</strong><br>
+            ${c[1]} vs ${c[2]}<br>
+            ${c[3]}
+        </div>`;
+    });
+
+    document.getElementById('fixtures-list').innerHTML = html;
+}
+
+async function loadScores(){
+    const response = await fetch(BASE + '?gid=134670430&single=true&output=csv');
+    const csv = await response.text();
+    const rows = csv.trim().split('\n').slice(1);
+
+    let html = '';
+
+    rows.forEach(row => {
+        const c = row.split(',');
+
+        html += `
+        <div class="data-card">
+            <strong>${c[0]}</strong><br>
+            vs ${c[1]}<br>
+            ${c[2]}
         </div>`;
     });
 
     document.getElementById('scores-list').innerHTML = html;
-
-} catch(error) {
-
-    document.getElementById('scores-list').innerHTML =
-        'Unable to load scores';
-
-}
-```
-
 }
 
-async function loadEvents() {
-
-```
-const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTH31XSFheY-3zxOZml1eP51kEdAXGiQMeGinvzyTThamIwjDBkyyuHleSVIrbyFQSNdUGgCC3dpixM/pub?gid=772596660&single=true&output=csv';
-
-try {
-
-    const response = await fetch(url);
+async function loadEvents(){
+    const response = await fetch(BASE + '?gid=772596660&single=true&output=csv');
     const csv = await response.text();
-
     const rows = csv.trim().split('\n').slice(1);
 
     let html = '';
 
     rows.forEach(row => {
-
-        const cols = row.split(',');
+        const c = row.split(',');
 
         html += `
         <div class="data-card">
-            <strong>${cols[0]}</strong><br>
-            ${cols[1]}
+            <strong>${c[0]}</strong><br>
+            ${c[1]}
         </div>`;
     });
 
     document.getElementById('events-list').innerHTML = html;
-
-} catch(error) {
-
-    document.getElementById('events-list').innerHTML =
-        'Unable to load events';
-
-}
-```
-
 }
 
-async function loadVolunteers() {
-
-```
-const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTH31XSFheY-3zxOZml1eP51kEdAXGiQMeGinvzyTThamIwjDBkyyuHleSVIrbyFQSNdUGgCC3dpixM/pub?gid=680568062&single=true&output=csv';
-
-try {
-
-    const response = await fetch(url);
+async function loadVolunteers(){
+    const response = await fetch(BASE + '?gid=680568062&single=true&output=csv');
     const csv = await response.text();
-
     const rows = csv.trim().split('\n').slice(1);
 
     let html = '';
 
     rows.forEach(row => {
-
         html += `
         <div class="data-card">
             ${row}
@@ -323,20 +247,19 @@ try {
     });
 
     document.getElementById('volunteers-list').innerHTML = html;
-
-} catch(error) {
-
-    document.getElementById('volunteers-list').innerHTML =
-        'Unable to load volunteer roles';
-
-}
-```
-
 }
 
+loadFixtures();
 loadScores();
 loadEvents();
 loadVolunteers();
+
+setInterval(() => {
+    loadFixtures();
+    loadScores();
+    loadEvents();
+    loadVolunteers();
+}, 120000);
 
 </script>
 
