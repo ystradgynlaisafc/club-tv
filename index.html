@@ -89,6 +89,20 @@ body{
     padding:12px;
     font-weight:bold;
 }
+
+.screen{
+    display:none;
+}
+
+.screen.active{
+    display:block;
+    animation:fadeIn 1s;
+}
+
+@keyframes fadeIn{
+    from{opacity:0;}
+    to{opacity:1;}
+}
 </style>
 
 </head>
@@ -104,15 +118,13 @@ body{
         </div>
     </div>
 
-```
 <div id="clock"></div>
-```
 
 </div>
 
 <div class="container">
-
-```
+<div id="screen1" class="screen active">
+    
 <div class="grid">
 
     <div class="card">
@@ -136,20 +148,25 @@ body{
     </div>
 
 </div>
+    
+</div>
+<div id="screen2" class="screen">
 
 <div class="card full-width">
     <h2>🏢 Sponsors</h2>
-    <p>Sponsor logos coming soon.</p>
 </div>
+
+</div>
+<div id="screen3" class="screen">
 
 <div class="card full-width">
     <h2>📸 Around The Club</h2>
-    <p>Photo gallery coming soon.</p>
 </div>
 ```
 
 </div>
-
+    
+</div>
 <div class="footer">
     YSTRADGYNLAIS AFC • MATCHDAY HUB • EST. 1911
 </div>
@@ -261,6 +278,27 @@ setInterval(() => {
     loadVolunteers();
 }, 120000);
 
+    let currentScreen = 0;
+
+const screens = [
+    document.getElementById('screen1'),
+    document.getElementById('screen2'),
+    document.getElementById('screen3')
+];
+
+setInterval(() => {
+
+    screens[currentScreen].classList.remove('active');
+
+    currentScreen++;
+
+    if(currentScreen >= screens.length){
+        currentScreen = 0;
+    }
+
+    screens[currentScreen].classList.add('active');
+
+}, 15000);
 </script>
 
 </body>
