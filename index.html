@@ -313,6 +313,7 @@ loadScores();
 loadEvents();
 loadVolunteers();
 loadMessages();
+loadWeather();
     
 async function loadMessages() {
 
@@ -385,6 +386,33 @@ async function loadPhotos() {
     }
 }
 
+    async function loadWeather() {
+
+    try {
+
+        const response = await fetch(
+            'https://api.open-meteo.com/v1/forecast?latitude=51.78&longitude=-3.78&current=temperature_2m,wind_speed_10m'
+        );
+
+        const data = await response.json();
+
+        document.getElementById('weather').innerHTML = `
+            <div style="font-size:40px;font-weight:bold;">
+                ${Math.round(data.current.temperature_2m)}°C
+            </div>
+            <div>
+                Wind: ${Math.round(data.current.wind_speed_10m)} km/h
+            </div>
+        `;
+
+    } catch(error) {
+
+        document.getElementById('weather').innerHTML =
+            'Weather unavailable';
+
+    }
+}
+    
 loadPhotos();
 setInterval(() => {
     loadFixtures();
@@ -392,6 +420,7 @@ setInterval(() => {
     loadEvents();
     loadVolunteers();
     loadMessages();
+    loadWeather();
 }, 120000);
 
     let currentScreen = 0;
