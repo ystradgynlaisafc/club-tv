@@ -90,6 +90,9 @@ body{
     font-weight:bold;
 }
 
+    #club-photo{
+    transition: opacity 0.5s ease;
+}
 .screen{
     display:none;
 }
@@ -162,14 +165,15 @@ body{
 <div class="card full-width photos">
     <h2>📸 Around The Club</h2>
 
-    <img
-      src="https://drive.google.com/uc?export=view&id=1W2SNzYIdzbu8ReTNNngjU8Weoz-Eqv1c"
-      style="
-        width:100%;
-        max-height:500px;
-        object-fit:contain;
-        border-radius:12px;
-      ">
+    <img id="club-photo"
+         src=""
+         style="
+            width:100%;
+            height:70vh;
+            object-fit:contain;
+            border-radius:12px;
+         ">
+
 </div>
 
 </div>
@@ -279,6 +283,43 @@ loadScores();
 loadEvents();
 loadVolunteers();
 
+let photoList = [];
+let currentPhoto = 0;
+
+async function loadPhotos() {
+
+    const response = await fetch('photos.json');
+    photoList = await response.json();
+
+    if(photoList.length > 0){
+
+        document.getElementById('club-photo').src =
+            photoList[0];
+
+        setInterval(() => {
+
+            currentPhoto++;
+
+            if(currentPhoto >= photoList.length){
+                currentPhoto = 0;
+            }
+
+            const img = document.getElementById('club-photo');
+
+            img.style.opacity = 0;
+
+            setTimeout(() => {
+
+                img.src = photoList[currentPhoto];
+                img.style.opacity = 1;
+
+            }, 500);
+
+        }, 5000);
+    }
+}
+
+loadPhotos();
 setInterval(() => {
     loadFixtures();
     loadScores();
