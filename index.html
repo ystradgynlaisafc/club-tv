@@ -127,8 +127,17 @@ body{
 <div class="header">
     <div class="header-left">
         <img src="badge.png" alt="Ystradgynlais AFC Badge">
-        .logo {
+.logo {
     animation: spinLogo 20s ease-in-out infinite;
+}
+
+@keyframes spinLogo {
+    from {
+        transform: rotateY(0deg);
+    }
+    to {
+        transform: rotateY(360deg);
+    }
 }
         <div>
             <h1>YSTRADGYNLAIS AFC</h1>
