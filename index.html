@@ -127,6 +127,9 @@ body{
 <div class="header">
     <div class="header-left">
         <img src="badge.png" alt="Ystradgynlais AFC Badge">
+        .logo {
+    animation: spinLogo 20s ease-in-out infinite;
+}
         <div>
             <h1>YSTRADGYNLAIS AFC</h1>
             <p>Clwb i Bawb – A Club for Everyone</p>
@@ -215,15 +218,25 @@ body{
 
 <script>
 
-function updateClock(){
-    const now = new Date();
-    document.getElementById("clock").innerHTML =
-        now.toLocaleTimeString('en-GB',{
-            hour:'2-digit',
-            minute:'2-digit'
-        });
-}
+function updateClock() {
 
+    const now = new Date();
+
+    const date = now.toLocaleDateString('en-GB', {
+        weekday: 'short',
+        day: 'numeric',
+        month: 'short'
+    });
+
+    const time = now.toLocaleTimeString('en-GB', {
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+
+    document.getElementById('clock').innerHTML =
+        `${date}<br>${time}`;
+}
+    
 updateClock();
 setInterval(updateClock,1000);
 
