@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ystradgynlais AFC Matchday Hub</title>
- 
+
 <style>
 body{
     margin:0;
@@ -27,10 +27,6 @@ body{
     display:flex;
     align-items:center;
     gap:20px;
-}
-
-.header-left img{
-    height:80px;
 }
 
 .header h1{
@@ -118,6 +114,22 @@ body{
     from{opacity:0;}
     to{opacity:1;}
 }
+
+ .logo{
+    height:80px;
+    animation:spinLogo 20s linear infinite;
+    transform-style:preserve-3d;
+}
+
+@keyframes spinLogo{
+    from{
+        transform:rotateY(0deg);
+    }
+
+    to{
+        transform:rotateY(360deg);
+    }
+}
 </style>
 
 </head>
@@ -126,24 +138,13 @@ body{
 
 <div class="header">
     <div class="header-left">
-        <img src="badge.png" alt="Ystradgynlais AFC Badge">
-.logo {
-    animation: spinLogo 20s ease-in-out infinite;
-}
+    <img class="logo" src="badge.png" alt="Ystradgynlais AFC Badge">
 
-@keyframes spinLogo {
-    from {
-        transform: rotateY(0deg);
-    }
-    to {
-        transform: rotateY(360deg);
-    }
-}
-        <div>
-            <h1>YSTRADGYNLAIS AFC</h1>
-            <p>Clwb i Bawb – A Club for Everyone</p>
-        </div>
+    <div>
+        <h1>YSTRADGYNLAIS AFC</h1>
+        <p>Clwb i Bawb – A Club for Everyone</p>
     </div>
+</div>
 
 <div id="clock"></div>
 
