@@ -278,19 +278,29 @@ async function loadEvents(){
 
     let html = '';
 
-    rows.forEach(row => {
+    const today = new Date();
+    today.setHours(0,0,0,0);
+
+    rows.reverse().forEach(row => {
+
         const c = row.split(',');
 
-        html += `
-        <div class="data-card">
-            <strong>${c[0]}</strong><br>
-            ${c[1]}
-        </div>`;
+        const eventDate = new Date(c[0].split('/').reverse().join('-'));
+        eventDate.setHours(0,0,0,0);
+
+        if(eventDate >= today){
+
+            html += `
+            <div class="data-card">
+                <strong>${c[0]}</strong><br>
+                ${c[1]}
+            </div>`;
+
+        }
     });
 
     document.getElementById('events-list').innerHTML = html;
 }
-
 async function loadVolunteers(){
     const response = await fetch(BASE + '?gid=680568062&single=true&output=csv');
     const csv = await response.text();
