@@ -364,7 +364,46 @@ const MEDIA_REFRESH = 3600000;
     document.getElementById('clock').innerHTML =
         `${date}<br>${time}`;
 }
-    
+
+function parseCSV(csv) {
+
+    const lines = csv.trim().split('\n');
+
+    return lines.slice(1).map(line => {
+
+        const values = [];
+        let current = "";
+        let inQuotes = false;
+
+        for (let i = 0; i < line.length; i++) {
+
+            const char = line[i];
+
+            if (char === '"') {
+
+                inQuotes = !inQuotes;
+
+            } else if (char === "," && !inQuotes) {
+
+                values.push(current.trim());
+
+                current = "";
+
+            } else {
+
+                current += char;
+
+            }
+
+        }
+
+        values.push(current.trim());
+
+        return values;
+
+    });
+
+}
 updateClock();
 setInterval(updateClock,CLOCK_INTERVAL);
 
@@ -376,7 +415,7 @@ async function loadFixtures(){
     let html = '';
 
     rows.forEach(row => {
-        const c = row.split(',');
+        const c = row;
 
         html += `
         <div class="data-card">
@@ -397,7 +436,7 @@ async function loadScores(){
     let html = '';
 
     rows.forEach(row => {
-        const c = row.split(',');
+        const c = row;
 
         html += `
         <div class="data-card">
@@ -422,7 +461,7 @@ async function loadEvents(){
 
     rows.reverse().forEach(row => {
 
-        const c = row.split(',');
+        const c = row;
 
         const eventDate = new Date(c[0].split('/').reverse().join('-'));
         eventDate.setHours(0,0,0,0);
