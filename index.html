@@ -512,11 +512,11 @@ async function loadMessages() {
         const response = await fetch(url);
         const csv = await response.text();
 
-        const rows = csv.trim().split('\n').slice(1);
+        const rows = parseCSV(csv);
 
         let html = '';
 
-        rows.forEach(row => {
+        rows.forEach(c => {
 
             html += `
             <div class="data-card" style="
@@ -525,8 +525,9 @@ async function loadMessages() {
                 padding:20px;
                 margin:15px 0;
             ">
-                ${row}
+                ${c[0]}
             </div>`;
+
         });
 
         document.getElementById('messages-list').innerHTML = html;
@@ -536,7 +537,10 @@ async function loadMessages() {
         document.getElementById('messages-list').innerHTML =
             'Unable to load club news';
 
+        console.error(error);
+
     }
+
 }
 let photoList = [];
 let currentPhoto = 0;
