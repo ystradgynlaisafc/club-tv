@@ -115,6 +115,50 @@ body{
     to{opacity:1;}
 }
 
+/* ==========================
+   Sponsors
+========================== */
+
+.sponsor-wrapper{
+    width:100%;
+    overflow:hidden;
+    position:relative;
+    margin-top:20px;
+}
+
+.sponsor-track{
+    display:flex;
+    gap:50px;
+    width:max-content;
+    animation:scrollSponsors 45s linear infinite;
+}
+
+.sponsor{
+    width:220px;
+    height:120px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-shrink:0;
+}
+
+.sponsor img{
+    max-width:100%;
+    max-height:100%;
+    object-fit:contain;
+}
+
+@keyframes scrollSponsors{
+
+    from{
+        transform:translateX(0);
+    }
+
+    to{
+        transform:translateX(-50%);
+    }
+
+}
  .logo{
     height:80px;
     animation:spinLogo 20s linear infinite;
@@ -187,7 +231,21 @@ body{
 <div id="screen2" class="screen">
 
 <div class="card full-width">
-    <h2>🏢 Sponsors</h2>
+
+<h2>🏢 Proudly Supporting Ystradgynlais AFC</h2>
+
+<div class="sponsor-wrapper">
+
+<div class="sponsor-track" id="sponsor-track">
+
+Loading sponsors...
+
+</div>
+
+</div>
+
+</div>
+
 </div>
 
 </div>
@@ -446,14 +504,57 @@ async function loadPhotos() {
     }
 }
     
+let sponsorList = [];
+
+async function loadSponsors() {
+
+    try {
+
+        const response = await fetch('sponsors.json');
+        sponsorList = await response.json();
+
+        const track = document.getElementById('sponsor-track');
+
+        track.innerHTML = '';
+
+        // Duplicate the list for a seamless loop
+        const allSponsors = sponsorList.concat(sponsorList);
+
+        allSponsors.forEach(sponsor => {
+
+            const div = document.createElement('div');
+            div.className = 'sponsor';
+
+            const img = document.createElement('img');
+            img.src = sponsor.url;
+            img.alt = sponsor.name;
+
+            div.appendChild(img);
+
+            track.appendChild(div);
+
+        });
+
+    } catch (err) {
+
+        document.getElementById('sponsor-track').innerHTML =
+            'Unable to load sponsors.';
+
+        console.error(err);
+
+    }
+
+}
+    
 loadPhotos();
+loadSponsors();
 setInterval(() => {
-    loadFixtures();
-    loadScores();
-    loadEvents();
-    loadVolunteers();
-    loadMessages();
-    loadWeather();
+loadFixtures();
+loadScores();
+loadEvents();
+loadVolunteers();
+loadMessages();
+loadWeather();
 }, 120000);
 
     let currentScreen = 0;
