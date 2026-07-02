@@ -119,23 +119,36 @@ body{
    Sponsors
 ========================== */
 
+/* Sponsors */
+
 .sponsor-wrapper{
-    width:100%;
     overflow:hidden;
-    position:relative;
+    width:100%;
     margin-top:20px;
 }
 
 .sponsor-track{
     display:flex;
-    gap:50px;
+    gap:60px;
     width:max-content;
-    animation:scrollSponsors 45s linear infinite;
+    margin:25px 0;
+}
+
+.row1{
+    animation:scrollLeft 60s linear infinite;
+}
+
+.row2{
+    animation:scrollRight 70s linear infinite;
+}
+
+.row3{
+    animation:scrollLeft 80s linear infinite;
 }
 
 .sponsor{
     width:220px;
-    height:120px;
+    height:110px;
     display:flex;
     justify-content:center;
     align-items:center;
@@ -148,7 +161,7 @@ body{
     object-fit:contain;
 }
 
-@keyframes scrollSponsors{
+@keyframes scrollLeft{
 
     from{
         transform:translateX(0);
@@ -159,6 +172,19 @@ body{
     }
 
 }
+
+@keyframes scrollRight{
+
+    from{
+        transform:translateX(-50%);
+    }
+
+    to{
+        transform:translateX(0);
+    }
+
+}
+    
  .logo{
     height:80px;
     animation:spinLogo 20s linear infinite;
@@ -243,19 +269,14 @@ body{
 
 <div class="sponsor-wrapper">
 
-<div class="sponsor-track" id="sponsor-track">
+<div class="sponsor-track row1" id="sponsor-track-1"></div>
 
-Loading sponsors...
+<div class="sponsor-track row2" id="sponsor-track-2"></div>
 
-</div>
-
-</div>
+<div class="sponsor-track row3" id="sponsor-track-3"></div>
 
 </div>
-
-</div>
-
-</div>
+    
 <div id="screen3" class="screen">
 
 <div class="card full-width photos">
@@ -579,41 +600,46 @@ async function loadPhotos() {
     
 let sponsorList = [];
 
-async function loadSponsors() {
+async function loadSponsors(){
 
-    try {
+    try{
 
-        const response = await fetch('sponsors.json');
+        const response = await fetch("sponsors.json");
+
         sponsorList = await response.json();
 
-        const track = document.getElementById('sponsor-track');
+        const tracks = [
 
-        track.innerHTML = '';
+            document.getElementById("sponsor-track-1"),
+            document.getElementById("sponsor-track-2"),
+            document.getElementById("sponsor-track-3")
 
-        // Duplicate the list for a seamless loop
-        const allSponsors = sponsorList.concat(sponsorList);
+        ];
 
-        allSponsors.forEach(sponsor => {
+        tracks.forEach(track=>track.innerHTML="");
 
-            const div = document.createElement('div');
-            div.className = 'sponsor';
+        const looped = sponsorList.concat(sponsorList);
 
-            const img = document.createElement('img');
-            img.src = sponsor.url;
-            img.alt = sponsor.name;
+        looped.forEach((sponsor,index)=>{
+
+            const div=document.createElement("div");
+            div.className="sponsor";
+
+            const img=document.createElement("img");
+            img.src=sponsor.url;
+            img.alt=sponsor.name;
 
             div.appendChild(img);
 
-            track.appendChild(div);
+            tracks[index%3].appendChild(div);
 
         });
 
-    } catch (err) {
+    }
 
-        document.getElementById('sponsor-track').innerHTML =
-            'Unable to load sponsors.';
+    catch(err){
 
-        console.error(err);
+        console.log(err);
 
     }
 
