@@ -620,25 +620,38 @@ async function loadSponsors(){
 
         tracks.forEach(track=>track.innerHTML="");
 
-        const looped = sponsorList.concat(sponsorList);
+       const shuffled = [...sponsorList].sort(() => Math.random() - 0.5);
 
-        looped.forEach((sponsor,index)=>{
+    const looped = shuffled.concat(shuffled);
 
-            const div=document.createElement("div");
-            div.className="sponsor";
+tracks.forEach((track,row)=>{
 
-            const img=document.createElement("img");
-            img.src=sponsor.url;
-            img.alt=sponsor.name;
+    // Start each row at a different point
+    const start = Math.floor((row * sponsorList.length) / 3);
 
-            div.appendChild(img);
+    const orderedSponsors = [
+        ...shuffled.slice(start),
+        ...shuffled.slice(0, start)
+    ];
 
-            tracks[index%3].appendChild(div);
+    const displaySponsors = orderedSponsors.concat(orderedSponsors);
 
-        });
+    displaySponsors.forEach(sponsor => {
 
-    }
+        const div = document.createElement("div");
+        div.className = "sponsor";
 
+        const img = document.createElement("img");
+        img.src = sponsor.url;
+        img.alt = sponsor.name;
+
+        div.appendChild(img);
+
+        track.appendChild(div);
+
+    });
+
+});
     catch(err){
 
         console.log(err);
