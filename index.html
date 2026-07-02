@@ -333,7 +333,20 @@ body{
 
 <script>
 
-function updateClock() {
+const BASE = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTH31XSFheY-3zxOZml1eP51kEdAXGiQMeGinvzyTThamIwjDBkyyuHleSVIrbyFQSNdUGgCC3dpixM/pub';
+
+// =======================
+// Dashboard Settings
+// =======================
+
+const CLOCK_INTERVAL = 1000;
+const PHOTO_INTERVAL = 5000;
+const SCREEN_INTERVAL = 20000;
+
+const DATA_REFRESH = 120000;
+const WEATHER_REFRESH = 900000;
+const MEDIA_REFRESH = 3600000;
+    function updateClock() {
 
     const now = new Date();
 
@@ -353,9 +366,7 @@ function updateClock() {
 }
     
 updateClock();
-setInterval(updateClock,1000);
-
-const BASE = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTH31XSFheY-3zxOZml1eP51kEdAXGiQMeGinvzyTThamIwjDBkyyuHleSVIrbyFQSNdUGgCC3dpixM/pub';
+setInterval(updateClock,CLOCK_INTERVAL);
 
 async function loadFixtures(){
     const response = await fetch(BASE + '?gid=0&single=true&output=csv');
@@ -569,7 +580,7 @@ async function loadPhotos() {
 
             }, 500);
 
-        }, 5000);
+        }, PHOTO_INTERVAL);
     }
 }
 
@@ -659,16 +670,48 @@ async function loadSponsors(){
 
 }
     
-loadPhotos();
-loadSponsors();
+async function safeLoad(name, loader) {
+
+    try {
+
+        await loader();
+
+    } catch (error) {
+
+        console.error(`${name} failed:`, error);
+
+    }
+
+safeLoad("Sponsors", loadSponsors);
+safeLoad("Photos", loadPhotos);
+
 setInterval(() => {
-loadFixtures();
-loadScores();
-loadEvents();
-loadVolunteers();
-loadMessages();
-loadWeather();
-}, 120000);
+
+    safeLoad("Fixtures", loadFixtures);
+    safeLoad("Scores", loadScores);
+    safeLoad("Events", loadEvents);
+    safeLoad("Volunteers", loadVolunteers);
+    safeLoad("Messages", loadMessages);
+
+}, DATA_REFRESH);
+
+setInterval(() => {
+
+    safeLoad("Weather", loadWeather);
+
+}, WEATHER_REFRESH);
+
+setInterval(() => {
+
+    safeLoad("Sponsors", loadSponsors);
+
+}, MEDIA_REFRESH);
+
+setInterval(() => {
+
+    safeLoad("Photos", loadPhotos);
+
+}, MEDIA_REFRESH);
 
     let currentScreen = 0;
 
@@ -691,7 +734,7 @@ setInterval(() => {
 
     screens[currentScreen].classList.add('active');
 
-}, 20000);
+}, SCREEN_INTERVAL);
 </script>
 
 </body>
