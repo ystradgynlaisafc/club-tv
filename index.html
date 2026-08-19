@@ -436,7 +436,7 @@ async function loadScores(){
     let html = '';
 
     rows.forEach(row => {
-        const c = row;
+        const c = row.split(',');
 
         html += `
         <div class="data-card">
